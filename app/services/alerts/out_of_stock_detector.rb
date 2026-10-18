@@ -20,6 +20,7 @@ module Alerts
       rows = alert_rows
 
       Alert.transaction do
+        # Delete stale alerts
         filter_for_store_and_product(Alert.all).where.not(tracking_event_id: rows.map { |row| row[:tracking_event_id] }).delete_all
         # The previous event can change when an earlier event arrives late
         Alert.upsert_all(rows, unique_by: :tracking_event_id, update_only: [:previous_tracking_event_id]) if rows.any?
@@ -59,13 +60,15 @@ module Alerts
         .joins(:product)
         .order(:store_id, :product_id, :event_time, :id)
         .pluck("tracking_events.id", :store_id, :product_id, "products.brand_id", :inventory_present)
-        .chunk_while { |a, b| a[1] == b[1] && a[2] == b[2] }
+        .group_by { |_id, store_id, product_id| [store_id, product_id] }
+        .values
     end
 
+    # A full run (no store/product given) checks every history
     def filter_for_store_and_product(records)
-      records = records.where(store_id: @store_id) if @store_id
-      records = records.where(product_id: @product_id) if @product_id
-      records
+      return records unless @store_id && @product_id
+
+      records.where(store_id: @store_id, product_id: @product_id)
     end
   end
 end
