@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_05_020718) do
+ActiveRecord::Schema[7.1].define(version: 2026_10_18_181103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,6 +41,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_05_020718) do
     t.datetime "event_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "price", precision: 10, scale: 2
     t.index ["product_id"], name: "index_tracking_events_on_product_id"
     t.index ["store_id"], name: "index_tracking_events_on_store_id"
   end
