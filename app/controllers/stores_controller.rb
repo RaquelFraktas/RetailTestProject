@@ -5,7 +5,6 @@ class StoresController < ApplicationController
 
   def show
     @store = Store.find(params[:id])
-    tracking_events = @store.tracking_events.includes(product: :brand).order(created_at: :desc)
     @pagy, @tracking_events = pagy(@store.tracking_events
                                           .includes(product: :brand)
                                           .order(created_at: :desc),
