@@ -6,7 +6,7 @@
 
 <p>
   <strong>Total Alerts:</strong>
-  <%= @total %>
+  <%= @pagy.count %>
 </p>
 
 <table>
@@ -34,15 +34,8 @@
   </tbody>
 </table>
 
-<p>
-  <% if @page > 1 %>
-    <%= link_to "Previous", alerts_path(brand_id: @brand&.id, page: @page - 1) %>
-  <% end %>
-  Page <%= @page %> of <%= [(@total / AlertsController::PER_PAGE.to_f).ceil, 1].max %>
-  <% if @page * AlertsController::PER_PAGE < @total %>
-    <%= link_to "Next", alerts_path(brand_id: @brand&.id, page: @page + 1) %>
-  <% end %>
-</p>
+<p><%== @pagy.info_tag %></p>
+<%== @pagy.series_nav %>
 
 <nav>
   <% if @brand %>

@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @brand.products.each do |product| %>
+    <% @products.each do |product| %>
       <tr>
         <td><%= product.name %></td>
         <td><%= product.tracking_events.size %></td>
@@ -29,6 +29,9 @@
     <% end %>
   </tbody>
 </table>
+
+<p><%== @pagy.info_tag %></p>
+<%== @pagy.series_nav %>
 
 <nav>
   <%= link_to "Back to Brands", brands_path %> |

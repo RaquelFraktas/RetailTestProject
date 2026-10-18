@@ -1,10 +1,10 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.all
+    @pagy, @products = pagy(Product.all, limit: 30)
   end
 
   def show
     @product = Product.find(params[:id])
+    @pagy, @tracking_events = pagy(@product.tracking_events, limit: 30)
   end
 end
-

@@ -22,7 +22,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @store.tracking_events.each do |event| %>
+    <% @tracking_events.each do |event| %>
       <tr>
         <td><%= event.event_time&.strftime("%Y-%m-%d %H:%M") %></td>
         <td><%= event.inventory_checked? ? (event.inventory_present ? "Yes" : "No") : "—" %></td>
@@ -33,6 +33,9 @@
     <% end %>
   </tbody>
 </table>
+
+<p><%== @pagy.info_tag %></p>
+<%== @pagy.series_nav %>
 
 <nav>
   <%= link_to "Back to Stores", stores_path %> |
