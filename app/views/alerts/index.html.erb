@@ -1,0 +1,55 @@
+<h1><%= @brand ? "Alerts for #{@brand.name}" : "Alerts" %></h1>
+
+<p>
+  Raised when a store records two "no inventory" events in a row for the same product.
+</p>
+
+<p>
+  <strong>Total Alerts:</strong>
+  <%= @total %>
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Out of Stock Since</th>
+      <th>Confirmed</th>
+      <th>Brand</th>
+      <th>Product</th>
+      <th>Store Address</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @alerts.each do |alert| %>
+      <tr>
+        <td><%= alert.previous_tracking_event.event_time&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= alert.tracking_event.event_time&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= link_to alert.brand.name, brand_path(alert.brand) %></td>
+        <td><%= link_to alert.product.name, product_path(alert.product) %></td>
+        <td><%= link_to alert.store.address, store_path(alert.store) %></td>
+        <td><%= link_to "View", alert_path(alert) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <% if @page > 1 %>
+    <%= link_to "Previous", alerts_path(brand_id: @brand&.id, page: @page - 1) %>
+  <% end %>
+  Page <%= @page %> of <%= [(@total / AlertsController::PER_PAGE.to_f).ceil, 1].max %>
+  <% if @page * AlertsController::PER_PAGE < @total %>
+    <%= link_to "Next", alerts_path(brand_id: @brand&.id, page: @page + 1) %>
+  <% end %>
+</p>
+
+<nav>
+  <% if @brand %>
+    <%= link_to "All Alerts", alerts_path %> |
+    <%= link_to "Back to #{@brand.name}", brand_path(@brand) %> |
+  <% end %>
+  <%= link_to "Brands", brands_path %> |
+  <%= link_to "Products", products_path %> |
+  <%= link_to "Stores", stores_path %>
+</nav>

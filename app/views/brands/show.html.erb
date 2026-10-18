@@ -5,6 +5,11 @@
   <%= @brand.products.size %>
 </p>
 
+<p>
+  <strong>Out of Stock Alerts:</strong>
+  <%= link_to @brand.alerts.count, alerts_path(brand_id: @brand) %>
+</p>
+
 <h2>Products</h2>
 <table>
   <thead>

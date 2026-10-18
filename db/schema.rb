@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_10_18_181103) do
+ActiveRecord::Schema[7.1].define(version: 2026_10_18_194935) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alerts", force: :cascade do |t|
+    t.bigint "brand_id", null: false
+    t.bigint "product_id", null: false
+    t.bigint "store_id", null: false
+    t.bigint "tracking_event_id", null: false
+    t.bigint "previous_tracking_event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["brand_id"], name: "index_alerts_on_brand_id"
+    t.index ["previous_tracking_event_id"], name: "index_alerts_on_previous_tracking_event_id"
+    t.index ["product_id"], name: "index_alerts_on_product_id"
+    t.index ["store_id"], name: "index_alerts_on_store_id"
+    t.index ["tracking_event_id"], name: "index_alerts_on_tracking_event_id", unique: true
+  end
 
   create_table "brands", force: :cascade do |t|
     t.string "name"
@@ -43,9 +58,15 @@ ActiveRecord::Schema[7.1].define(version: 2026_10_18_181103) do
     t.datetime "updated_at", null: false
     t.decimal "price", precision: 10, scale: 2
     t.index ["product_id"], name: "index_tracking_events_on_product_id"
+    t.index ["store_id", "product_id", "event_time"], name: "idx_on_store_id_product_id_event_time_31e9176147"
     t.index ["store_id"], name: "index_tracking_events_on_store_id"
   end
 
+  add_foreign_key "alerts", "brands"
+  add_foreign_key "alerts", "products"
+  add_foreign_key "alerts", "stores"
+  add_foreign_key "alerts", "tracking_events", column: "previous_tracking_event_id", on_delete: :cascade
+  add_foreign_key "alerts", "tracking_events", on_delete: :cascade
   add_foreign_key "products", "brands"
   add_foreign_key "tracking_events", "products"
   add_foreign_key "tracking_events", "stores"

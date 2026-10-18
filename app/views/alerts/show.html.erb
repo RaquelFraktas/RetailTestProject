@@ -1,0 +1,39 @@
+<h1>Out of Stock Alert</h1>
+
+<p>
+  <strong>Brand:</strong>
+  <%= link_to @alert.brand.name, brand_path(@alert.brand) %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= link_to @alert.product.name, product_path(@alert.product) %>
+</p>
+
+<p>
+  <strong>Store Address:</strong>
+  <%= link_to @alert.store.address, store_path(@alert.store) %>
+</p>
+
+<h2>Consecutive "No Inventory" Events</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Event Time</th>
+      <th>Inventory Present?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% [@alert.previous_tracking_event, @alert.tracking_event].each do |event| %>
+      <tr>
+        <td><%= event.event_time&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= event.inventory_present ? "Yes" : "No" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<nav>
+  <%= link_to "Back to Alerts", alerts_path %> |
+  <%= link_to "#{@alert.brand.name} Alerts", alerts_path(brand_id: @alert.brand) %>
+</nav>
