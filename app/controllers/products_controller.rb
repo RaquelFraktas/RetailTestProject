@@ -5,6 +5,6 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
-    @pagy, @tracking_events = pagy(@product.tracking_events, limit: 30)
+    @pagy, @tracking_events = pagy(@product.tracking_events.order(created_at: :desc), limit: 30)
   end
 end
