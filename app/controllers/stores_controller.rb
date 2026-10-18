@@ -5,6 +5,10 @@ class StoresController < ApplicationController
 
   def show
     @store = Store.find(params[:id])
-    @pagy, @tracking_events = pagy(@store.tracking_events.order(created_at: :desc), limit: 30)
+    tracking_events = @store.tracking_events.includes(product: :brand).order(created_at: :desc)
+    @pagy, @tracking_events = pagy(@store.tracking_events
+                                          .includes(product: :brand)
+                                          .order(created_at: :desc),
+                                  limit: 30)
   end
 end
