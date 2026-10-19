@@ -17,8 +17,8 @@ bin/rails server
 Other commands:
 
 ```bash
-bin/rails test           # model, alert detector and CSV importer tests
-bin/rails alerts:detect  # rebuild every alert from existing events (safe to re-run)
+bin/rails test
+bin/rails alerts:detect 
 ```
 
 The CSV has no price column, so a way to see price tracking in the UI, create an event in `bin/rails console`:

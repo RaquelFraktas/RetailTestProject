@@ -15,7 +15,7 @@ class Alerts::OutOfStockDetectorTest < ActiveSupport::TestCase
 
   test "alerts the brand on the second consecutive no-inventory event" do
     first = record("2025-01-01", inventory_present: false)
-    assert_no_difference("Alert.count") { first }
+    assert_equal 0, Alert.count
 
     second = record("2025-01-02", inventory_present: false)
     alert = Alert.sole

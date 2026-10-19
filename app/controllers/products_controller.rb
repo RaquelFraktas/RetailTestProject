@@ -6,8 +6,8 @@ class ProductsController < ApplicationController
   def show
     @product = Product.find(params[:id])
     @pagy, @tracking_events = pagy(@product.tracking_events
-                                            .includes(:store)
-                                            .order(event_time: :desc), 
-                                    limit: 30)
+                                           .includes(:store)
+                                           .order(event_time: :desc),
+                                          limit: 30)
   end
 end

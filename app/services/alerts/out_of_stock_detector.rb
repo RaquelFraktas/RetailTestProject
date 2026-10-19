@@ -18,10 +18,11 @@ module Alerts
 
     def call
       rows = alert_rows
+      tracking_event_ids = rows.map { |row| row[:tracking_event_id] }
 
       Alert.transaction do
         # Delete stale alerts
-        filter_for_store_and_product(Alert.all).where.not(tracking_event_id: rows.map { |row| row[:tracking_event_id] }).delete_all
+        filter_for_store_and_product(Alert.all).where.not(tracking_event_id: tracking_event_ids).delete_all
         # The previous event can change when an earlier event arrives late
         Alert.upsert_all(rows, unique_by: :tracking_event_id, update_only: [:previous_tracking_event_id]) if rows.any?
       end
