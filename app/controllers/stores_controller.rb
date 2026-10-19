@@ -1,13 +1,13 @@
 class StoresController < ApplicationController
   def index
-    @pagy, @stores = pagy(Store.all, limit: 30)
+    @pagy, @stores = pagy(Store.all.order(:address), limit: 30)
   end
 
   def show
     @store = Store.find(params[:id])
     @pagy, @tracking_events = pagy(@store.tracking_events
                                           .includes(product: :brand)
-                                          .order(created_at: :desc),
+                                          .order(event_time: :desc),
                                   limit: 30)
   end
 end
