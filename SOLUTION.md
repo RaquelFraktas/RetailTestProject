@@ -62,7 +62,7 @@ An alert is raised for the brand when a store records two consecutive "no invent
 - **N+1 queries:** association lookups (brand, store, product) are eager-loaded with `includes`.
 
 ## Trade-offs and next steps
-- **Data integrity:** the importer matches stores by address and products by name, so I'd add unique indexes on both- hoping the .csv file holds that information.
+- **Data integrity:** the importer matches stores by address and products by name, so I'd add unique indexes on both.
 - **Scale (e.g. millions of stores):**
   - **Importer memory:** the store/product lookup hashes grow with the whole table, not the file. Load them per batch instead (`where(address: batch_addresses)`), which needs the unique indexes above to avoid a full scan per batch.
   - **Matching stores:** a free-text address is a weak key at this scale ("Main St" vs "Main Street"), and mismatched rows are silently skipped. The CSV should carry a stable store code with a unique index.

@@ -1,11 +1,18 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+inventory_only:
+  product: one
+  store: one
+  event_time: 2025-01-02
+  inventory_present: true
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+price_only:
+  product: one
+  store: one
+  event_time: 2025-01-03
+  price: 4.99
+
+both:
+  product: two
+  store: two
+  event_time: 2025-01-04
+  inventory_present: false
+  price: 12.50
